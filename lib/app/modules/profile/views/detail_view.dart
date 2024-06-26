@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:pull_to_refresh_pro/pull_to_refresh_pro.dart';
 
 import 'package:get/get.dart';
 
@@ -9,44 +10,63 @@ class ProfileDetailView extends GetView {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        // appBar: AppBar(
-        //   title: const Text('DetailView'),
-        //   centerTitle: true,
-        // ),
-        body: Container(
-      padding: EdgeInsets.only(top: 80),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.topRight,
-          colors: [
-            Color(0xFFFCF4EB), // 超级浅橙色
-            Color(0xFFE3EBF3), // 超级浅蓝色
-          ],
-          stops: [0.2, 0.8], // 控制颜色扩散范围
+        body: Stack(
+      children: [
+        Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.topRight,
+              colors: [
+                Color(0xFFFCF4EB), // 超级浅橙色
+                Color(0xFFE3EBF3), // 超级浅蓝色
+              ],
+              stops: [0.2, 0.8], // 控制颜色扩散范围
+            ),
+          ),
         ),
-      ),
-      child: Container(
-        child: Column(
-          children: [
-            Avatar(),
-            SizedBox(
-              height: 20,
+        SafeArea(
+          child: Container(
+            padding: EdgeInsets.symmetric(horizontal: 16),
+            child: Column(
+              children: [
+                AppBar(
+                  backgroundColor: Colors.transparent,
+                  elevation: 0,
+                  title: Text("Gradient AppBar"),
+                ),
+                SmartRefresher(
+                    controller: controller,
+                  child: Column(
+                    children: [Avatar(),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      cards(),
+                      SizedBox(
+                        height: 16,
+                      ),
+                      overview(),
+                      SizedBox(
+                        height: 14,
+                      ),
+                      accountOverview(),
+                      MonthlyBilling()],
+                  ),
+                ),
+
+              ],
             ),
-            cards(),
-            SizedBox(
-              height: 16,
-            ),
-            overview(),
-            SizedBox(
-              height: 14,
-            ),
-            accountOverview(),
-            MonthlyBilling()
-          ],
-        ),
-        padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
-      ),
+          ),
+        )
+        // Container(
+        //
+        //   child: Container(
+        //     child:
+        //     padding: EdgeInsets.fromLTRB(16, 0, 16, 0),
+        //   ),
+        // )
+      ],
     ));
   }
 
@@ -77,7 +97,8 @@ class ProfileDetailView extends GetView {
                     padding: EdgeInsets.only(left: 15, bottom: 12),
                     child: Text(
                       '【福利通知】 免费领2毫克黄金红包>',
-                      style: TextStyle(color: Colors.grey.shade600, fontSize: 14),
+                      style:
+                          TextStyle(color: Colors.grey.shade600, fontSize: 14),
                     ),
                   ),
                 ],
@@ -126,7 +147,9 @@ class ProfileDetailView extends GetView {
                                       color: Colors.white, fontSize: 14)),
                               Text('¥ 1.31',
                                   style: TextStyle(
-                                      color: Colors.white, fontSize: 28)),
+                                      fontFamily: 'Din',
+                                      color: Colors.white,
+                                      fontSize: 28)),
                             ],
                           ),
                           Column(
@@ -137,8 +160,9 @@ class ProfileDetailView extends GetView {
                                       color: Colors.white, fontSize: 14)),
                               Text('+15387.1',
                                   style: TextStyle(
-                                    fontFamily: 'Din',
-                                      color: Colors.white, fontSize: 28)),
+                                      fontFamily: 'Din',
+                                      color: Colors.white,
+                                      fontSize: 28)),
                             ],
                           )
                         ],
@@ -207,7 +231,10 @@ class ProfileDetailView extends GetView {
         Text(
           number.toString(),
           style: const TextStyle(
-              fontSize: 20, color: Colors.black, fontWeight: FontWeight.w600),
+              fontFamily: 'Din',
+              fontSize: 20,
+              color: Colors.black,
+              fontWeight: FontWeight.w600),
         ),
       ],
     );

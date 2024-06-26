@@ -12,6 +12,7 @@ dependencies:
   flutter: 
     sdk: flutter
   flutter_easyloading: ^3.0.5
+  pull_to_refresh_pro: ^0.0.1
 
 dev_dependencies: 
   flutter_lints: ^3.0.0

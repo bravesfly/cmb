@@ -1,0 +1,26 @@
+name: cmb
+version: 1.0.0+1
+publish_to: none
+description: A new Flutter project.
+environment: 
+  sdk: '>=3.4.3 <4.0.0'
+
+dependencies: 
+  cupertino_icons: ^1.0.6
+  gesture_password_widget: ^2.0.1
+  get: 4.6.6
+  flutter: 
+    sdk: flutter
+  flutter_easyloading: ^3.0.5
+
+dev_dependencies: 
+  flutter_lints: ^3.0.0
+  flutter_test: 
+    sdk: flutter
+
+flutter: 
+  uses-material-design: true
+  fonts:
+    - family: Din
+      fonts:
+        - asset: assets/fonts/din-webfont.ttf

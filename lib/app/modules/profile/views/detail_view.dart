@@ -5,10 +5,15 @@ import 'package:pull_to_refresh_pro/pull_to_refresh_pro.dart';
 
 import 'package:get/get.dart';
 
+import '../controllers/profile_controller.dart';
+
 class ProfileDetailView extends GetView {
   const ProfileDetailView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    final ProfileRefreshController refresh_controller =
+        Get.put(ProfileRefreshController());
+    List<String> items = ["1", "2", "3", "4", "5", "6", "7", "8"];
     return Scaffold(
         body: Stack(
       children: [
@@ -35,26 +40,27 @@ class ProfileDetailView extends GetView {
                   elevation: 0,
                   title: Text("Gradient AppBar"),
                 ),
-                SmartRefresher(
-                    controller: controller,
-                  child: Column(
-                    children: [Avatar(),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      cards(),
-                      SizedBox(
-                        height: 16,
-                      ),
-                      overview(),
-                      SizedBox(
-                        height: 14,
-                      ),
-                      accountOverview(),
-                      MonthlyBilling()],
-                  ),
+                Column(
+                  children: [
+                    Avatar(),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    cards(),
+                    SizedBox(
+                      height: 16,
+                    ),
+                    overview(),
+                    SizedBox(
+                      height: 14,
+                    ),
+                    accountOverview(),
+                    SizedBox(
+                      height: 14,
+                    ),
+                    MonthlyBilling()
+                  ],
                 ),
-
               ],
             ),
           ),
@@ -72,7 +78,33 @@ class ProfileDetailView extends GetView {
 
   Widget MonthlyBilling() {
     return Container(
-      child: Text('本月收支'),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10.0),
+        color: Colors.white,
+      ),
+      height: 180,
+      child: Column(
+        children: [
+          Text('本月收支'),
+          Row(
+            children: [
+              Column(
+                children: [Text('支出'), Text('888888')],
+              ),
+              Column(
+                children: [Text('收入'), Text('888888')],
+              ),
+            ],
+          ),
+          CustomPaint(
+            size: Size(double.infinity,50), // 指定绘制区域的大小
+            painter: DiagonalLinePainter(),
+          ),
+          Row(
+            children: [Text('五月结余'), Text('查看')],
+          )
+        ],
+      ),
     );
   }
 
@@ -176,18 +208,6 @@ class ProfileDetailView extends GetView {
         );
       },
     );
-    //   Container(
-    //   width:double.infinity,
-    //   padding: EdgeInsets.symmetric(horizontal: 20,vertical: 15),
-    //   decoration: BoxDecoration(
-    //       borderRadius: BorderRadius.circular((6.0)),
-    //       gradient: RadialGradient(colors: [Colors.grey,  Colors.white],radius: 1, tileMode: TileMode.clamp)
-    //   ),
-    //
-    //   child: Column(
-    //     children: [Text('账户总览'), Text('总资产')],
-    //   ),
-    // );
   }
 
   Widget overview() {
@@ -290,5 +310,48 @@ class ProfileDetailView extends GetView {
         Text('会员图标')
       ],
     );
+  }
+}
+
+class DiagonalLinePainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    Paint paint = Paint()
+      ..strokeWidth = 4
+      ..strokeCap = StrokeCap.round;
+
+    // 中间点
+    Offset start = Offset(0, size.height / 2);
+    Offset end = Offset(size.width, size.height / 2);
+    Offset middleLeft = Offset(size.width / 2 - 10, size.height / 2);
+    Offset middleRight = Offset(size.width / 2 + 10, size.height / 2);
+
+    // 画左侧圆角橙色线条
+    paint.color = Colors.orange;
+    paint.strokeCap = StrokeCap.round;
+    canvas.drawLine(start, middleLeft, paint);
+
+    // 画右侧三角形蓝色线条
+    paint.color = Colors.orange;
+    paint.strokeCap = StrokeCap.butt; // 默认样式即可
+    canvas.drawLine(middleRight, end, paint);
+
+    // 绘制中间斜角
+    Path cutPath = Path()
+      ..moveTo(middleLeft.dx, middleLeft.dy - 2.5)
+      ..lineTo(middleRight.dx, middleRight.dy + 2.5)
+      ..lineTo(middleRight.dx+6, middleRight.dy - 2.5)
+      ..lineTo(middleLeft.dx, middleLeft.dy + 2.5)
+      ..close();
+
+    Paint cutPaint = Paint()
+      ..color = Colors.black
+      ..style = PaintingStyle.fill;
+    canvas.drawPath(cutPath, cutPaint);
+  }
+
+  @override
+  bool shouldRepaint(CustomPainter oldDelegate) {
+    return false;
   }
 }
